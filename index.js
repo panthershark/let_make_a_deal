@@ -2,6 +2,7 @@ const argv = require('yargs').argv;
 const RUN_COUNT = argv.run_count || 100;
 const HOST_KNOWS_ANSWER = argv.host_knows_answer === 'true';
 const CONTESTANT_SWITCHES = argv.contestant_switches === 'true';
+const VERBOSE = argv.verbose === 'true';
 const create_doors = require('./lib/doors.js');
 const create_contestant = require('./lib/contestant.js');
 const create_host = require('./lib/host.js');
@@ -9,6 +10,12 @@ const did_contestant_win = require('./lib/did_contestant_win.js');
 
 let rcount = 0;
 let wins = 0;
+
+const log = (str) => {
+  if (VERBOSE) {
+    console.log(str);
+  }
+}
 
 const play_game = () => {
   let doors = create_doors();
@@ -29,7 +36,10 @@ do {
   var contestant_won = play_game();
 
   if (contestant_won) {
+    log(`contestant won a CAR`);
     ++wins;
+  } else {
+    log(`contestant won a GOAT`);
   }
 
 } while (++rcount < RUN_COUNT)
